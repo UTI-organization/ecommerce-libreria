@@ -1,0 +1,4 @@
+*** Libreria Changelog ***
+
+2022-07-18 - version 1.0.0
+* Initial release
