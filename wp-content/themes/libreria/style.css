@@ -1609,6 +1609,8 @@ input[type="checkbox"]:checked::before,
 	-webkit-box-align: center;
 	-ms-flex-align: center;
 	align-items: center;
+	max-width: 100%;
+	margin: 0 auto;
 }
 
 /* Scroll to top. */
