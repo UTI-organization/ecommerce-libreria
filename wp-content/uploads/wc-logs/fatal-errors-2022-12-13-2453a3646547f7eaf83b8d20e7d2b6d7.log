@@ -1,0 +1,31 @@
+2022-12-13T22:44:48+00:00 CRITICAL Uncaught TypeError: preg_match(): Argument #2 ($subject) must be of type string, array given in /opt/lampp/htdocs/wordpress/wp-includes/class-wp-block-parser.php:417
+Stack trace:
+#0 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-block-parser.php(417): preg_match('/<!--\\s+(?P<clo...', Array, NULL, 256, 0)
+#1 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-block-parser.php(256): WP_Block_Parser->next_token()
+#2 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-block-parser.php(236): WP_Block_Parser->proceed()
+#3 /opt/lampp/htdocs/wordpress/wp-includes/blocks.php(1073): WP_Block_Parser->parse(Array)
+#4 /opt/lampp/htdocs/wordpress/wp-includes/blocks.php(797): parse_blocks(Array)
+#5 /opt/lampp/htdocs/wordpress/wp-includes/formatting.php(5100): filter_block_content(Array, 'post', Array)
+#6 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(308): wp_pre_kses_block_attributes(Array, 'post', Array)
+#7 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#8 /opt/lampp/htdocs/wordpress/wp-includes/kses.php(910): apply_filters('pre_kses', Array, 'post', Array)
+#9 /opt/lampp/htdocs/wordpress/wp-includes/kses.php(720): wp_kses_hook(Array, 'post', Array)
+#10 /opt/lampp/htdocs/wordpress/wp-includes/kses.php(2107): wp_kses(Array, 'post')
+#11 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(308): wp_kses_post(Array, Object(Kirki_Settings_Repeater_Setting))
+#12 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#13 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-customize-setting.php(576): apply_filters('customize_sanit...', Array, Object(Kirki_Settings_Repeater_Setting))
+#14 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-customize-manager.php(1834): WP_Customize_Setting->sanitize(Array)
+#15 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-customize-setting.php(555): WP_Customize_Manager->post_value(Object(Kirki_Settings_Repeater_Setting), Object(stdClass))
+#16 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-customize-setting.php(340): WP_Customize_Setting->post_value(Object(stdClass))
+#17 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-customize-manager.php(938): WP_Customize_Setting->preview()
+#18 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(308): WP_Customize_Manager->wp_loaded('')
+#19 /opt/lampp/htdocs/wordpress/wp-includes/class-wp-hook.php(332): WP_Hook->apply_filters(NULL, Array)
+#20 /opt/lampp/htdocs/wordpress/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#21 /opt/lampp/htdocs/wordpress/wp-settings.php(639): do_action('wp_loaded')
+#22 /opt/lampp/htdocs/wordpress/wp-config.php(82): require_once('/opt/lampp/htdo...')
+#23 /opt/lampp/htdocs/wordpress/wp-load.php(50): require_once('/opt/lampp/htdo...')
+#24 /opt/lampp/htdocs/wordpress/wp-blog-header.php(13): require_once('/opt/lampp/htdo...')
+#25 /opt/lampp/htdocs/wordpress/index.php(17): require('/opt/lampp/htdo...')
+#26 {main}
+  thrown in /opt/lampp/htdocs/wordpress/wp-includes/class-wp-block-parser.php on line 417
+
