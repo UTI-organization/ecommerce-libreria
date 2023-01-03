@@ -73,7 +73,7 @@ class WebhookEventReceiver {
 					] );
 					if ( $wc_refund ) {
 						// update the net amount since the refund affects that
-						PayPalFee::update_net( $refund, $order );
+						PayPalFee::update_net_from_refund( $refund, $order );
 						$wc_refund->update_meta_data( Constants::PAYPAL_REFUND, $refund->id );
 						$wc_refund->save();
 						$order->add_order_note( sprintf( __( 'Order refunded in PayPal. Amount: %1$s. Refund ID: %2$s', 'pymntpl-paypal-woocommerce' ),

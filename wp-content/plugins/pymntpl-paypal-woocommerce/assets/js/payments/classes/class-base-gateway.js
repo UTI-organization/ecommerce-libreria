@@ -13,6 +13,7 @@ import {
     extractFullName,
     getSetting,
     setFieldValue,
+    isValid,
     isValidFieldValue,
     getPayPalQueryParams,
     getErrorMessage
@@ -60,7 +61,7 @@ class BaseGateway {
                 resolve();
             }).catch(error => {
                 console.log(error);
-                if (error?.code === 'invalid_client_id') {
+                if (error?.code) {
                     this.submitError(getErrorMessage(error));
                 }
                 reject();
@@ -335,16 +336,24 @@ class BaseGateway {
             this.populateBillingAddressFields(convertPayPalAddressToCart(token.payer_info.billing_address));
         }
         if (token?.payer_info?.first_name) {
-            setFieldValue('first_name', token.payer_info.first_name, 'billing');
+            if (!isValid('billing_first_name')) {
+                setFieldValue('first_name', token.payer_info.first_name, 'billing');
+            }
         }
         if (token?.payer_info?.last_name) {
-            setFieldValue('last_name', token.payer_info.last_name, 'billing');
+            if (!isValid('billing_last_name')) {
+                setFieldValue('last_name', token.payer_info.last_name, 'billing');
+            }
         }
         if (token?.payer_info?.email) {
-            setFieldValue('billing_email', token.payer_info.email);
+            if (!isValid('billing_email')) {
+                setFieldValue('billing_email', token.payer_info.email);
+            }
         }
         if (token?.payer_info?.phone) {
-            setFieldValue('billing_phone', token.payer_info.phone);
+            if (!isValid('billing_phone')) {
+                setFieldValue('billing_phone', token.payer_info.phone);
+            }
         }
         if (this.needsShipping() && token.shipping_address) {
             if (!isEmpty(token.shipping_address)) {

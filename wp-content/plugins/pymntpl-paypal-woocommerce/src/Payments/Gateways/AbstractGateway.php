@@ -229,7 +229,7 @@ abstract class AbstractGateway extends \WC_Payment_Gateway {
 					$refund->update_meta_data( Constants::PAYPAL_REFUND, $result->id );
 				}
 				OrderLock::set_order_lock( $order, MINUTE_IN_SECONDS );
-				PayPalFee::update_net( $result, $order, true );
+				PayPalFee::update_net_from_refund( $result, $order, true );
 				$order->add_order_note(
 					sprintf(
 						__( 'Order refunded in PayPal. Amount: %1$s. Refund ID: %2$s', 'pymntpl-paypal-woocommerce' ),

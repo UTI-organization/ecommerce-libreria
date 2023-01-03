@@ -6,7 +6,10 @@ import {
     setFieldValue,
     convertPayPalAddressToCart,
     extractFullName,
-    isValidAddress, isValidFieldValue, extractShippingMethod, getPage
+    isValidAddress,
+    isValid,
+    extractShippingMethod,
+    getPage
 } from "@ppcp/utils";
 import {isEmpty, isEqual} from 'lodash';
 
@@ -243,12 +246,12 @@ class CheckoutGateway extends BaseGateway {
             }
         }
         if (response?.payer?.name) {
-            if (!isValidFieldValue(getFieldValue('billing_first_name'))) {
+            if (!isValid('billing_first_name')) {
                 this.populateNameFields(response.payer.name, 'billing');
             }
         }
         // only overwrite billing email if the field is blank
-        if (response?.payer?.email_address && !isValidFieldValue(getFieldValue('billing_email'))) {
+        if (response?.payer?.email_address && !isValid('billing_email')) {
             setFieldValue('billing_email', response.payer.email_address);
         }
         if (response?.payer?.phone?.phone_number?.national_number) {
@@ -274,7 +277,7 @@ class CheckoutGateway extends BaseGateway {
                 }
                 // add billing address if possible
                 if (!isValidAddress(this.getCartFullAddress('billing'), ['phone', 'email'])) {
-                    if (name && !isValidFieldValue(getFieldValue('billing_first_name')) && !isValidFieldValue(getFieldValue('billing_last_name'))) {
+                    if (name && !isValid('billing_first_name') && !isValid('billing_last_name')) {
                         this.populateNameFields(name, 'billing');
                     }
                     this.populateBillingAddressFields(address);

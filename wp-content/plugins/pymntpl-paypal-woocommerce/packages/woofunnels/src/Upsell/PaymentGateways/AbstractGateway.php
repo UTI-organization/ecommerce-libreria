@@ -14,11 +14,13 @@ use PaymentPlugins\PayPalSDK\Refund;
 use PaymentPlugins\PayPalSDK\Shipping;
 use PaymentPlugins\WooCommerce\PPCP\Assets\AssetsApi;
 use PaymentPlugins\WooCommerce\PPCP\Constants;
+use PaymentPlugins\WooCommerce\PPCP\FeeCalculation;
 use PaymentPlugins\WooCommerce\PPCP\Main;
 use PaymentPlugins\WooCommerce\PPCP\PaymentHandler;
 use PaymentPlugins\WooCommerce\PPCP\PaymentResult;
 use PaymentPlugins\WooCommerce\PPCP\Utilities\NumberUtil;
 use PaymentPlugins\WooCommerce\PPCP\Utilities\OrderLock;
+use PaymentPlugins\WooCommerce\PPCP\Utilities\PayPalFee;
 
 class AbstractGateway extends \WFOCU_Gateway {
 
@@ -75,6 +77,7 @@ class AbstractGateway extends \WFOCU_Gateway {
 			$result = new PaymentResult( $response, $order, $payment_method );
 			if ( $result->success() ) {
 				WFOCU_Core()->data->set( '_transaction_id', $result->get_capture_id() );
+				$this->update_order_fee( $result, $order );
 
 				return $this->handle_result( true );
 			} else {
@@ -179,6 +182,7 @@ class AbstractGateway extends \WFOCU_Gateway {
 			return false;
 		} else {
 			$this->logger->log( sprintf( 'Transaction %s refunded: Amount: %s', $order->get_id(), $amount ) );
+			PayPalFee::update_net_from_refund( $result, $order, true );
 
 			return true;
 		}
@@ -200,6 +204,25 @@ class AbstractGateway extends \WFOCU_Gateway {
 
 	protected function is_processing_redirect() {
 		return $this->paypal_order;
+	}
+
+	private function update_order_fee( PaymentResult $result, \WC_Order $order ) {
+		if ( $result->is_captured() ) {
+			$order_behavior = WFOCU_Core()->funnels->get_funnel_option( 'order_behavior' );
+			$use_main_order = $order_behavior === 'batching';
+			if ( $use_main_order ) {
+				// If using the main order update the net and fees
+				$calculation = new FeeCalculation( $order );
+				$calculation->calculate_from_receivable_breakdown( $result->get_capture()->seller_receivable_breakdown );
+				$calculation->save();
+			} else {
+				add_action( 'wfocu_offer_new_order_created_' . $this->get_key(), function ( $order ) use ( $result ) {
+					$calculation = new FeeCalculation( $order, true );
+					$calculation->calculate_from_receivable_breakdown( $result->get_capture()->seller_receivable_breakdown );
+					$calculation->save();
+				} );
+			}
+		}
 	}
 
 }

@@ -4,7 +4,7 @@ Tags: paypal, paylater, venmo, credit cards
 Requires at least: 4.7
 Tested up to: 6.1
 Requires PHP: 7.1
-Stable tag: 1.0.17
+Stable tag: 1.0.18
 Copyright: Payment Plugins
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -45,7 +45,11 @@ Our documentation has a step-by-step guide on how to connect the plugin to your 
 Payment Plugins is the team behind several of the highest reviewed and installed Payment integrations for WooCommerce.
 
 == Changelog ==
-= 1.0.17 - 12/9/22 -
+= 1.0.18 - 12/24/22 =
+* Added - PayPal fee to FunnelKit Upsell orders
+* Added - Error message for invalid currency
+* Updated - If billing name or email is populated on checkout page, don't override those values when using a billing agreement.
+= 1.0.17 - 12/9/22 =
 * Added - Improved compatibility with Mondial Relay
 * Added - Show error message if incorrect client ID has been entered in API Settings page
 * Fixed - If Stripe Express section is enabled, ensure PayPal buttons have necessary css classes added

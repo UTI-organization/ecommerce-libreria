@@ -15,7 +15,8 @@ class Messages {
 	private function initialize() {
 		$this->messages = [
 			'terms'             => __( 'Please check the terms and conditions before proceeding.', 'pymntpl-paypal-woocommerce' ),
-			'invalid_client_id' => __( 'Invalid PayPal client ID. Please check your API Settings.', 'pymntpl-paypal-woocommerce' )
+			'invalid_client_id' => __( 'Invalid PayPal client ID. Please check your API Settings.', 'pymntpl-paypal-woocommerce' ),
+			'invalid_currency'  => __( 'PayPal does not support currency %. Please use a supported currency.', 'pymntpl-paypal-woocommerce' )
 		];
 	}
 

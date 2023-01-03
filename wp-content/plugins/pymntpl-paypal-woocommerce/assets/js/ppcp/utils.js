@@ -59,15 +59,21 @@ export const loadPayPalSdk = (params = null) => {
                 defaultHooks.doAction('paypalInstanceCreated', paypal, urlParams);
             }).catch(error => {
                 console.log(error);
+                const msg = error?.message?.toLowerCase() || null;
                 let response;
-                if (error?.message?.includes('locale')) {
-                    const {locale, ...newParams} = params;
-                    return loadPayPalSdk(newParams).then(paypal => {
-                        resolve(paypal);
-                    });
-                }
-                if (error?.message?.includes('client-id not recognized')) {
-                    response = {code: 'invalid_client_id'};
+                if (msg) {
+                    if (msg.includes('locale')) {
+                        const {locale, ...newParams} = params;
+                        return loadPayPalSdk(newParams).then(paypal => {
+                            resolve(paypal);
+                        });
+                    } else if (msg.includes('client-id not recognized')) {
+                        response = {code: 'invalid_client_id'};
+                    } else if (msg.includes('invalid query value for client-id')) {
+                        response = {code: 'invalid_client_id'};
+                    } else if (msg.includes('invalid query value for currency')) {
+                        response = {code: 'unsupported_currency', message: getErrorMessage({code: 'invalid_currency'}).replace('%', urlParams.currency)};
+                    }
                 }
                 defaultHooks.doAction('paypalLoadError');
                 reject(response);
@@ -244,6 +250,10 @@ export const convertPayPalAddressToCart = (address, intermediate = false) => {
 export const isValidFieldValue = (value) => {
     value = value?.trim();
     return !!value;
+}
+
+export const isValid = key => {
+    return isValidFieldValue(getFieldValue(key));
 }
 
 /**
